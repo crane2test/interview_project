@@ -1,0 +1,20 @@
+<h1>The Logz</h1>
+<em>Showing most recent 100 log entries.</em>
+
+<table>
+	<tr>
+			<th>When</th>
+			<th>Request</th>
+			<th>Result</th>
+	</tr>
+	
+	<% @logs.each do |log| %>
+		<tr>
+				<td><%= log.created_at.strftime( '%m/%d/%Y %I:%M %p' ) %></td>
+				<td><%= log.request %></td>
+				<td><%= log.result %></td>
+		</tr>
+	<% end %>
+	
+</table>
+		

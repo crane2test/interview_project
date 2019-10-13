@@ -9,5 +9,6 @@ class PopulationsController < ApplicationController
 		@year = @year.to_i.to_s
 		
     @population = Population.get(@year,true)
+		Log.write( @year, @population )
   end
 end
