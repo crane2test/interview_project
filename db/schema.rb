@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_13_140552) do
+ActiveRecord::Schema.define(version: 2019_10_13_143701) do
 
   create_table "logs", force: :cascade do |t|
     t.string "request"
     t.string "result"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "label"
   end
 
   create_table "populations", force: :cascade do |t|

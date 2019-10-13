@@ -7,10 +7,11 @@ class Log < ApplicationRecord
 	
 	
 	# Write a Log record.
-	def self.write request, result
+	def self.write request, result, label="exact"
 		o = Log.new
 		o.request = request
 		o.result = result
+		o.label = label
 		o.save
 	end
 	

@@ -63,10 +63,14 @@ class Population < ApplicationRecord
 
     pop = find_closest_year( year )
 		if pop 
-			return pop.population unless extrapolate
-			return pop.population if pop.is_year?( year )
+			if ( extrapolate == false ) || ( pop.is_year?( year ) )
+				Log.write( year, pop.population )
+				return pop.population
+			end
 
-			return get_extrapolated_pop( year, pop )
+			calculated = get_extrapolated_pop( year, pop )
+			Log.write( year, calculated, "calculated" )
+			return calculated
 		end
 		
     nil
