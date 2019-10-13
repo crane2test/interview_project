@@ -22,5 +22,30 @@ RSpec.describe Population, type: :model do
     expect(Population.get(2000)).to eq(248709873)
     expect(Population.get(200000)).to eq(248709873)
   end
+	
+	it "should extrapolate for missing data" do
+		a = 151325798
+		b = 179323175
+		c = 165324487
+		y1 = 1950
+		y2 = 1960
+		expect(Population.get(y1)).to eq(a)
+		expect(Population.get(y2)).to eq(b)
+		
+		y = 1955
+		factor = ( y - y1 ).to_f / ( y2 - y1 ).to_f
+		expect( factor ).to eq( 0.5 )
+		x = ( a + ( ( b - a ) * factor ) ).round
+		expect( x ).to eq( c )
+		expect(Population.get(y,true)).to eq(x)
+	end
+	
+	it "should know if it is the same year" do
+		o = Population.new
+		o.year = Date.parse( "1/1/2000" )
+		expect( o.is_year?( 2000 ) ).to be true
+		expect( o.is_year?( 2001 ) ).to be false
+		expect( o.is_year?( 1999 ) ).to be false
+	end
 
 end
