@@ -1,5 +1,8 @@
 class Population < ApplicationRecord
 
+	has_many :logs
+	
+	
   def self.min_year
     Population.all.map(&:year).min.year
   end
@@ -64,7 +67,7 @@ class Population < ApplicationRecord
     pop = find_closest_year( year )
 		if pop 
 			if ( extrapolate == false ) || ( pop.is_year?( year ) )
-				Log.write( year, pop.population )
+				Log.write( year, pop.population, "exact", pop )
 				return pop.population
 			end
 

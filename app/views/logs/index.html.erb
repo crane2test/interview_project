@@ -20,3 +20,20 @@
 	
 </table>
 		
+		
+<h2>Requests by Year</h2>
+<table>
+	<tr>
+			<th>Year</th>
+			<th>Requests</th>
+	</tr>
+	
+	<% @years.each do |y| %>
+		<tr>
+				<td><%= y.year.strftime( '%Y' ) %></td>
+				<td><%= y[ "count(request)" ] %></td>
+		</tr>
+	<% end %>
+	
+</table>
+		
