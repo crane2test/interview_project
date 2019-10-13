@@ -18,11 +18,19 @@ class Population < ApplicationRecord
 		return Population.where( 'year > ?', d ).order( 'year ASC' ).first
 	end
 	
-	# Find the extrapolated population value when we don't have 
-	# an exact data match.
-	def self.get_extrapolated_pop( given_year, found_year )
-		next_year = find_next_year( given_year )
-		return found_year.population unless next_year
+	# Calculate exponential growth for a future date.
+	# Assume a 9% growth rate
+	def self.future_growth( given_year, found_year )
+		given_year = given_year.to_i
+		return "Out of Range" if given_year > 2500
+		years = given_year - found_year.year.year
+		factor = ( 1.09 ** years )
+		future = ( found_year.population * factor ).round
+		return future
+	end
+	
+	# Find population between two known years.
+	def self.between_years( given_year, found_year, next_year )
 		a = found_year.population
 		b = next_year.population
 		c = 165324487
@@ -33,6 +41,17 @@ class Population < ApplicationRecord
 		factor = ( y - y1 ).to_f / ( y2 - y1 ).to_f
 		x = ( a + ( ( b - a ) * factor ) ).round
 		return x
+	end
+	
+	# Find the extrapolated population value when we don't have 
+	# an exact data match.
+	def self.get_extrapolated_pop( given_year, found_year )
+		next_year = find_next_year( given_year )
+		if next_year
+			return between_years( given_year, found_year, next_year )
+		else
+			return future_growth( given_year, found_year )
+		end
 	end
 
 	# Get the population for a particular year.

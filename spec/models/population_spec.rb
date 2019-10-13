@@ -48,4 +48,18 @@ RSpec.describe Population, type: :model do
 		expect( o.is_year?( 1999 ) ).to be false
 	end
 
+	it "should grow exponentially for future years" do
+		expect(Population.get(1990)).to eq(248709873)
+		expect(Population.get(1991)).to eq(248709873)
+		x = ( Population.get(1991) * 1.09 ).round
+		expect(Population.get(1991,true)).to eq(x)
+
+		x = ( Population.get(1990) * 1.09 * 1.09 ).round
+		expect(Population.get(1992,true)).to eq(x)
+	end
+
+	it "should be out of range if given year is past 2500" do
+		expect(Population.get(2501,true)).to eq("Out of Range")		
+	end
+	
 end
